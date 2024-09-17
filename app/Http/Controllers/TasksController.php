@@ -13,7 +13,8 @@ class TasksController extends Controller
     }
     public function index()
     {
-
+        $tasks = $this->tasksService->getTasks();
+        return view('index')->with('tasks', $tasks);
     }
     public function create()
     {
@@ -21,7 +22,14 @@ class TasksController extends Controller
     }
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'title' => ['required', 'max:255'],
+            'description' => ['required', 'min:10', 'max:255'],
+        ]);
+        $id = $this->tasksService->createTask($validatedData);
+        if (!$id)
+            return redirect(route('tasks.create'))->withErrors(['error' => 'Cannot create task']);
+        return redirect(route('tasks.index'));
     }
     public function show(string $id)
     {

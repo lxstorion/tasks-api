@@ -12,4 +12,8 @@ class TaskService
     public function destroyTask($id) {
         return Tasks::destroy($id);
     }
+    public function createTask(array $task) {
+        $id = Tasks::create($task);
+        return $id;
+    }
 }
