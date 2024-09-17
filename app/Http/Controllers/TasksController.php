@@ -33,7 +33,10 @@ class TasksController extends Controller
     }
     public function show(string $id)
     {
-        //
+        $task = $this->tasksService->getTaskById($id);
+        if (!$task)
+            return view('show')->withErrors(['error' => 'Cannot find task with id: ' . $id]);
+        return view('show')->with('task', $task);
     }
     public function edit(string $id)
     {

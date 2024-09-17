@@ -16,4 +16,8 @@ class TaskService
         $id = Tasks::create($task);
         return $id;
     }
+    public function getTaskById($id) {
+        $task = Tasks::find($id);
+        return $task;
+    }
 }
