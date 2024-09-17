@@ -9,4 +9,7 @@ class TaskService
     public function getTasks() {
         return Tasks::all();
     }
+    public function destroyTask($id) {
+        return Tasks::destroy($id);
+    }
 }

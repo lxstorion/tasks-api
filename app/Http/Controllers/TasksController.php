@@ -3,31 +3,34 @@
 namespace App\Http\Controllers;
 
 use App\Services\TaskService;
-use http\Env\Response;
 use Illuminate\Http\Request;
 
-class TaskController extends Controller
+class TasksController extends Controller
 {
-    private TaskService $taskService;
-    public function __construct(TaskService $taskService) {
-        $this->taskService = $taskService;
+    private $tasksService;
+    public function __construct(TaskService $tasksService) {
+        $this->tasksService = $tasksService;
     }
     public function index()
     {
-        $tasks = $this->taskService->getTasks();
-        return response()->json($tasks);
-    }
 
+    }
+    public function create()
+    {
+        return view('form');
+    }
     public function store(Request $request)
     {
         //
     }
-
     public function show(string $id)
     {
         //
     }
-
+    public function edit(string $id)
+    {
+        //
+    }
     public function update(Request $request, string $id)
     {
         //
