@@ -49,6 +49,9 @@ class TasksController extends Controller
 
     public function destroy(string $id)
     {
-        //
+        $destroyed = $this->tasksService->destroyTask($id);
+        if (!$destroyed)
+            return redirect()->back(404)->withErrors(['error' => 'Cannot delete task with id: ' . $id]);
+        return redirect(route('tasks.index'));
     }
 }
