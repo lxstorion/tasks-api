@@ -3,27 +3,32 @@
 namespace App\Services;
 
 use App\Models\Tasks;
+use App\Services\Contracts\ResourceServiceContract;
 
-class TaskService
+class TaskService implements ResourceServiceContract
 {
-    public function getTasks() {
+    public function getAll() {
         return Tasks::all();
     }
-    public function destroyTask($id) {
+    public function delete($id) {
         $deleted = Tasks::find($id);
         if (!$deleted)
             return false;
         $deleted->delete();
         return $deleted;
     }
-    public function createTask(array $task) {
+    public function create(array $task) {
         $task = new Tasks($task);
         return $task->save();
     }
-    public function getTaskById($id) {
+    public function getById($id) {
         $task = Tasks::find($id);
         if (!$task)
             return false;
         return $task;
+    }
+    public function update($id, array $data)
+    {
+
     }
 }
