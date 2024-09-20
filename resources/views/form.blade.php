@@ -9,7 +9,11 @@
         <br>
         <input type="submit" value="Create task">
     </form>
-    @foreach($errors->all() as $error)
-        <p>{{ $error }}</p>
-    @endforeach
+    @if($errors->any())
+        <ul id="validation-errors">
+            @foreach($errors->all() as $error)
+            <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    @endif
 </div>

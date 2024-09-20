@@ -7,10 +7,11 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
+            <div class="spinner-border" role="status" id="delete-loader">
+                <span class="visually-hidden">Loading...</span>
+            </div>
             <div class="modal-body" id="form-body">
-                <div class="spinner-border" role="status">
-                    <span class="visually-hidden">Loading...</span>
-                </div>
+
             </div>
         </div>
     </div>

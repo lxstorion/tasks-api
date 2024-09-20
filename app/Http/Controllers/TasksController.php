@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 class TasksController extends Controller
 {
     private ResourceServiceContract $tasksService;
-    public function __construct(TaskService $tasksService) {
+    public function __construct(ResourceServiceContract $tasksService) {
         $this->tasksService = $tasksService;
     }
     public function index()
@@ -51,7 +51,12 @@ class TasksController extends Controller
     }
     public function update(Request $request, string $id)
     {
-        //
+        $validatedData = $request->validate([
+            'title' => ['required', 'max:255'],
+            'description' => ['required', 'min:10', 'max:255']
+        ]);
+        $updated = $this->tasksService->update($id, $validatedData);
+
     }
 
     public function delete($id) {
