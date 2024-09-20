@@ -47,6 +47,15 @@ class TasksController extends Controller
         //
     }
 
+    public function delete($id) {
+        $task = $this->tasksService->getTaskById($id);
+        if (!$task)
+            return response()->json([
+                'error' => 'Cannot find task with id: ' . $id,
+                'item_id' => $id
+            ], 404);
+        return view('modal')->with('task', $task);
+    }
     public function destroy(string $id)
     {
         $destroyed = $this->tasksService->destroyTask($id);

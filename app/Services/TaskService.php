@@ -10,14 +10,20 @@ class TaskService
         return Tasks::all();
     }
     public function destroyTask($id) {
-        return Tasks::destroy($id);
+        $deleted = Tasks::find($id);
+        if (!$deleted)
+            return false;
+        $deleted->delete();
+        return $deleted;
     }
     public function createTask(array $task) {
-        $id = Tasks::create($task);
-        return $id;
+        $task = new Tasks($task);
+        return $task->save();
     }
     public function getTaskById($id) {
         $task = Tasks::find($id);
+        if (!$task)
+            return false;
         return $task;
     }
 }
