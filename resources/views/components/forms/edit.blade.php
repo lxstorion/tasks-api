@@ -33,16 +33,23 @@
             description: $('#inputDescription').val()
         };
         $.ajax({
-            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            accepts: {},
             url: $(this).data('route'),
             type: 'PUT',
             data: data,
             success: function(response) {
                 $('#td-title-{{ $task->task_id }}').html(response.data.title);
                 $('#td-description-{{ $task->task_id }}').html(response.data.description);
+                $('#editModal').modal('toggle')
             },
             complete: function() {
-                $('#editModal').modal('toggle')
+
+            },
+            error: function(error) {
+
             }
         })
     })

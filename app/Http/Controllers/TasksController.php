@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Services\Contracts\ResourceServiceContract;
 use App\Services\TaskService;
+use Dotenv\Exception\ValidationException;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Validator;
 
 class TasksController extends Controller
 {
@@ -44,14 +46,19 @@ class TasksController extends Controller
     }
     public function update(Request $request, string $id)
     {
-        $validatedData = $request->validate([
+        $validator = \Illuminate\Support\Facades\Validator::make($request->only('title', 'description'), [
             'title' => ['required', 'max:255'],
-            'description' => ['required', 'min:10', 'max:255']
+            'description' => ['required', 'min:10', 'max:255'],
         ]);
-        $affectedRows = $this->tasksService->update($id, $validatedData);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
+        $affectedRows = $this->tasksService->update($id, $validator->validated());
         return $affectedRows < 1 ?
             response()->json(['errors' => ['error' => 'Fatal error during update task with task_id ' . $id]], 404) :
-            response()->json(['data' => $validatedData]);
+            response()->json(['data' => $validator->validated()]);
     }
 
     public function delete($id) {
