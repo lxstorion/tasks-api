@@ -34,20 +34,13 @@ class TasksController extends Controller
     }
     public function show(string $id)
     {
-        $task = $this->tasksService->getById($id);
-        if (!$task)
-            return view('show')->withErrors(['error' => 'Cannot find task with id: ' . $id]);
-        return view('show')->with('task', $task);
+        return view('show')
+            ->with('task', $this->tasksService->getById($id));
     }
     public function edit(string $id)
     {
-        $task = $this->tasksService->getById($id);
-        if (!$task)
-            return response()->json([
-                'error' => 'Unable to load resource',
-                'resource_id' => $id
-            ], 404);
-        return view('components.forms.edit')->with('task', $task);
+        return view('components.forms.edit')
+            ->with('task', $this->tasksService->getById($id));
     }
     public function update(Request $request, string $id)
     {
@@ -55,18 +48,15 @@ class TasksController extends Controller
             'title' => ['required', 'max:255'],
             'description' => ['required', 'min:10', 'max:255']
         ]);
-        $updated = $this->tasksService->update($id, $validatedData);
-
+        $affectedRows = $this->tasksService->update($id, $validatedData);
+        return $affectedRows < 1 ?
+            response()->json(['errors' => ['error' => 'Fatal error during update task with task_id ' . $id]], 404) :
+            response()->json(['data' => $validatedData]);
     }
 
     public function delete($id) {
-        $task = $this->tasksService->getById($id);
-        if (!$task)
-            return response()->json([
-                'error' => 'Unable to load resource',
-                'resource_id' => $id
-            ], 404);
-        return view('components.forms.delete')->with('task', $task);
+        return view('components.forms.delete')
+            ->with('task', $this->tasksService->getById($id));
     }
     public function destroy(string $id)
     {

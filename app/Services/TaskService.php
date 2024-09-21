@@ -11,24 +11,16 @@ class TaskService implements ResourceServiceContract
         return Tasks::all();
     }
     public function delete($id) {
-        $deleted = Tasks::find($id);
-        if (!$deleted)
-            return false;
-        $deleted->delete();
-        return $deleted;
+        return Tasks::destroy($id);
     }
     public function create(array $task) {
-        $task = new Tasks($task);
-        return $task->save();
+        return Tasks::create($task);
     }
     public function getById($id) {
-        $task = Tasks::find($id);
-        if (!$task)
-            return false;
-        return $task;
+        return Tasks::findOrFail($id);
     }
     public function update($id, array $data)
     {
-
+        return Tasks::where('task_id', $id)->update($data);
     }
 }
